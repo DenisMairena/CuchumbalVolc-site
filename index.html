@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Control de Cuchumbal</title>
+</head>
+<body>
+<div id="login"><div class="card">
+  <h1 style="text-align:center">💰 Cuchumbal</h1>
+  <div class="sub" style="text-align:center;margin-bottom:12px">Ingresa para continuar</div>
+  <label>Usuario<input id="lu" autocomplete="off" onkeydown="if(event.key=='Enter')$('lp').focus()"></label>
+  <label style="margin-top:8px">Contraseña<input id="lp" type="password" autocomplete="off" onkeydown="if(event.key=='Enter')doLogin()"></label>
+  <div id="le"></div>
+  <button style="width:100%" onclick="doLogin()">Ingresar</button>
+</div></div>
+<div id="auth" class="hide"><div class="card">
+  <h2>🔒 Autorización requerida</h2>
+  <div class="sub" id="am" style="margin-bottom:10px"></div>
+  <label>Usuario autorizado<input id="au" autocomplete="off"></label>
+  <label style="margin-top:8px">Contraseña<input id="ap" type="password" autocomplete="off" onkeydown="if(event.key=='Enter')authOk()"></label>
+  <div id="ae"></div>
+  <div class="row"><button onclick="authOk()">Autorizar</button><button class="g" onclick="authCancel()">Cancelar</button></div>
+</div></div>
+<div class="w hide" id="app">
+  <div class="row" style="justify-content:space-between;align-items:center"><h1>💰 Control de Cuchumbal</h1><button class="g" onclick="logout()">← Login</button></div>
+  <div class="sub">Ahorro entre compañeros: aportes semanales, avance por persona y rifa de turnos.</div>
+
+  <div class="card">
+    <div class="row">
+      <label>Nombre del cuchumbal<input id="cn" value="Cuchumbal"></label>
+      <label>Meses (4 semanas c/u)<input id="cw" type="number" min="1" max="24" value="4" style="width:110px"></label>
+      <label>Fecha de inicio<input id="cd" type="date"></label>
+      <button class="g" onclick="saveCfg()">Guardar</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button id="t0" onclick="tab(0)">👥 Participantes</button>
+    <button id="t1" onclick="tab(1)">📅 Control semanal</button>
+    <button id="t2" onclick="tab(2)">🎲 Rifa</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="p0">
+    <div class="card">
+      <h2>Registrar persona o agregar cuota</h2>
+      <div class="row">
+        <label>Buscar por nombre<input id="qs" list="dl" placeholder="Escribe para buscar" oninput="qSel()" style="width:200px"></label>
+        <datalist id="dl"></datalist>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label>Nombre<input id="pn" oninput="qPrev()"></label>
+        <label>Apellido<input id="pa" oninput="qPrev()"></label>
+        <label>Cuota semanal<input value="L 300 (fija)" disabled style="width:120px"></label>
+        <button onclick="addP()">Agregar cuota</button>
+      </div>
+      <div class="sub" id="qi" style="margin-top:8px;color:var(--ac)"></div>
+      <div class="sub" id="cap" style="margin-top:8px"></div>
+    </div>
+    <div class="card"><div class="sc"><table id="tp"></table></div></div>
+  </div>
+
+  <div id="p1" class="hide">
+    <div class="card">
+      <h2>Pagos por semana</h2>
+      <div class="sub" style="margin-bottom:8px">Marca la casilla cuando la persona paga esa semana. Los totales se actualizan solos.</div>
+      <div class="sc"><table id="tw"></table></div>
+    </div>
+  </div>
+
+  <div id="p2" class="hide">
+    <div class="card">
+      <h2>🎡 Ruleta de turnos</h2>
+      <div class="row">
+        <label>Agregar nombre a la ruleta<input id="wn" placeholder="Nombre y apellido"></label>
+        <button onclick="addW()">Agregar</button>
+        <button class="g" onclick="loadW()">Cargar participantes registrados</button>
+      </div>
+      <div style="position:relative;max-width:340px;margin:14px auto 6px">
+        <div style="position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:24px solid var(--wn);z-index:2"></div>
+        <canvas id="cv" width="340" height="340" style="width:100%;height:auto;display:block"></canvas>
+      </div>
+      <div class="win" id="win">¿Quién será?</div>
+      <div class="row" style="justify-content:center"><button id="sp" onclick="spin()">🎲 Girar ruleta</button><button class="g" onclick="undoLast()">Deshacer último turno</button><button class="d" onclick="clearWheel()">Vaciar ruleta</button></div>
+      <div class="sub" id="elig" style="margin-top:10px"></div>
+      <div id="wl" style="margin-top:8px"></div>
+    </div>
+    <div class="card">
+      <h2>Orden de turnos</h2>
+      <div class="sc"><table id="tr"></table></div>
+    </div>
+  </div>
+
+  <div class="card"><button class="d" onclick="resetAll()">Borrar TODO el sistema (participantes, pagos y ruleta)</button></div>
+  <footer>Credits: DENIS MAIRENA</footer>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
